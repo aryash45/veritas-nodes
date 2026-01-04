@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-veritas = "9bCZC8RLBvooM8L5DsNhv1tazXV1oMdiWvaDFpd6wZLk"
+veritas = "4ZVTFnkgbMzMFJacXTGVwEqFr8GbbcGuMAioX4Qxa1Jx"
 
 [registry]
 url = "https://api.apr.dev"

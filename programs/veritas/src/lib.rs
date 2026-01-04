@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-declare_id!("9bCZC8RLBvooM8L5DsNhv1tazXV1oMdiWvaDFpd6wZLk");
+declare_id!("4ZVTFnkgbMzMFJacXTGVwEqFr8GbbcGuMAioX4Qxa1Jx");
 
 #[program]
 pub mod veritas {
@@ -17,7 +17,14 @@ pub mod veritas {
         msg!("Level 1.1 Success: Node {} registered for owner {}", device_id, node.owner);
         Ok(())
     }
+    pub fn submit_data_hash(ctx: Context<SubmitData>, data_hash: [u8;32]) -> Result<()> {
+        let node = &mut ctx.accounts.node;
+        node.last_ping = Clock::get()?.unix_timestamp;
+        msg!("Heartbeat recieved from node {}:{:?}", node.device_id, data_hash);
+        Ok(())
+    }
 }
+
 
 #[derive(Accounts)]
 #[instruction(device_id: String)]
@@ -42,6 +49,17 @@ pub struct Node {
     pub is_active: bool,
     pub last_ping: i64,
     pub bump: u8,
+}
+#[derive(Accounts)]
+pub struct SubmitData<'info> {
+    #[account(
+        mut,
+        has_one = owner,
+        seeds = [b"node", node.owner.as_ref(), node.device_id.as_bytes()],
+        bump = node.bump,
+    )]
+    pub node: Account<'info, Node>,
+    pub owner: Signer<'info>,
 }
 
 impl Node {
