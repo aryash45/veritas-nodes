@@ -28,7 +28,7 @@ describe("veritas", () => {
       })
       .rpc();
 
-    const account = await program.account.node.fetch(nodePda);
+    const account = await program.account.nodeAccount.fetch(nodePda);
     assert.strictEqual(account.deviceId, deviceId);
     console.log("Registered Node PDA:", nodePda.toBase58());
   });
@@ -87,7 +87,7 @@ describe("veritas", () => {
         })
         .rpc();
 
-      const account = await program.account.node.fetch(nodePda);
+      const account = await program.account.nodeAccount.fetch(nodePda);
       assert.ok(account.lastPing.toNumber() > 0);
       console.log("✅ Heartbeat recorded at timestamp:", account.lastPing.toNumber());
     } catch (e) {
